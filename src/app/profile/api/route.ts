@@ -1,16 +1,24 @@
 import { type NextRequest } from "next/server";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 
 export async function GET(request: NextRequest){
 	const requestHeaders = new Headers(request.headers);
 	const headerList = headers();
 
+	// read theme cookie
+	cookies().set("resultPerPage", "20");
+	const theme = request.cookies.get("theme");
+	const resultPerPage = cookies().get("resultPerPage");
+
 	console.log(requestHeaders.get("Authorization"));
 	console.log(headerList.get("Authorization"));
+	console.log(theme);
+	console.log(resultPerPage);
 
 	return new Response("<h1> Profile Data </h1>", {
 		headers: {
-			"Content-Type": "text/html"
+			"Content-Type": "text/html",
+			"Set-Cookie": "theme=dark"
 		}
 	});
 }
